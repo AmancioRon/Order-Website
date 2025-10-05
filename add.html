@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Tracker - Add Order</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>➕ Add New Order</h1>
+    <nav>
+      <button onclick="window.location.href='index.html'">Home</button>
+      <button onclick="window.location.href='orders.html'">View Orders</button>
+    </nav>
+  </header>
+
+  <main>
+    <form id="orderForm">
+      <label>Customer Name:</label>
+      <input type="text" id="customerName" required>
+
+      <label>Order Item:</label>
+      <input type="text" id="orderName" required>
+
+      <label>Quantity:</label>
+      <input type="number" id="orderQty" min="1" required>
+
+      <label>Deadline:</label>
+      <input type="date" id="orderDeadline" required>
+
+      <button type="submit">Add Order</button>
+    </form>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
