@@ -40,6 +40,26 @@
     <small>SynapseSparks • Private system • Works offline</small>
   </footer>
 
+  <!-- Add Firebase SDKs and config BEFORE your script.js -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBG_hUU0a5SyJRnsTcQVJRtFLPxKzuDXyg",
+      authDomain: "synapsespark-store-management.firebaseapp.com",
+      databaseURL: "https://synapsespark-store-management-default-rtdb.firebaseio.com",
+      projectId: "synapsespark-store-management",
+      storageBucket: "synapsespark-store-management.appspot.com",
+      messagingSenderId: "163487180467",
+      appId: "1:163487180467:web:4f55075a5a9abc7b88f2c6",
+      measurementId: "G-0YM5CH57P8"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+  </script>
   <script src="script.js"></script>
   <script>
     // safe call to update summary
