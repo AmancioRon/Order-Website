@@ -17,12 +17,12 @@
 
   <main class="container">
     <section class="summary-row" aria-label="summary">
-      <div class="card fade-in" id="pendingCard" role="status" aria-live="polite">
+      <div class="card fade-in" id="pendingCard">
         <div class="card-title">Pending Orders</div>
         <div class="card-value" id="pendingCount">0</div>
       </div>
 
-      <div class="card fade-in" id="lowStockCard" role="status" aria-live="polite">
+      <div class="card fade-in" id="lowStockCard">
         <div class="card-title">Low Stock Items</div>
         <div class="card-value" id="lowStockCount">0</div>
       </div>
@@ -37,13 +37,14 @@
   </main>
 
   <footer class="site-footer">
-    <small>SynapseSparks • Private system • Works offline</small>
+    <small>SynapseSparks • Private system • Works offline + Firebase sync</small>
   </footer>
 
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
+  <!-- Firebase Config -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBG_hUU0a5SyJRnsTcQVJRtFLPxKzuDXyg",
@@ -61,6 +62,7 @@
     const db = firebase.database();
   </script>
 
+  <!-- Your main script -->
   <script src="script.js"></script>
   <script>
     // Safe call to update summary
