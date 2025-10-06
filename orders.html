@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Tracker - Orders</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SynapseSparks — Orders</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>📋 Orders</h1>
-    <nav>
-      <button onclick="window.location.href='index.html'">Home</button>
-      <button onclick="window.location.href='add.html'">Add Order</button>
-    </nav>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="brand">SynapseSparks</h1>
+      <p class="tagline">Orders</p>
+    </div>
   </header>
 
-  <main>
-    <h2>Pending Orders</h2>
-    <ul id="orderList"></ul>
+  <main class="container">
+    <ul id="ordersList" class="orders-list"></ul>
+
+    <section class="nav-buttons">
+      <a class="big-btn" href="index.html">🏠 Back to Dashboard</a>
+      <a class="big-btn" href="add.html">➕ Add Order</a>
+      <a class="big-btn" href="inventory.html">📦 Manage Inventory</a>
+    </section>
   </main>
 
+  <footer class="site-footer">
+    <small>SynapseSparks • Private system • Works offline</small>
+  </footer>
+
   <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderOrders();
+    });
+  </script>
 </body>
 </html>

@@ -1,38 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Tracker - Add Order</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SynapseSparks — Add Order</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>➕ Add New Order</h1>
-    <nav>
-      <button onclick="window.location.href='index.html'">Home</button>
-      <button onclick="window.location.href='orders.html'">View Orders</button>
-    </nav>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="brand">SynapseSparks</h1>
+      <p class="tagline">Add New Order</p>
+    </div>
   </header>
 
-  <main>
-    <form id="orderForm">
-      <label>Customer Name:</label>
-      <input type="text" id="customerName" required>
+  <main class="container">
+    <form id="orderForm" class="form-card">
+      <label>
+        Customer Name:
+        <input type="text" id="customerName" required>
+      </label>
 
-      <label>Order Item:</label>
-      <input type="text" id="orderName" required>
+      <label>
+        Item:
+        <select id="orderItem" required></select>
+      </label>
 
-      <label>Quantity:</label>
-      <input type="number" id="orderQty" min="1" required>
+      <label>
+        Quantity:
+        <input type="number" id="orderQty" min="1" required>
+      </label>
 
-      <label>Deadline:</label>
-      <input type="date" id="orderDeadline" required>
+      <label>
+        Deadline:
+        <input type="date" id="orderDeadline" required>
+      </label>
 
-      <button type="submit">Add Order</button>
+      <div class="form-actions">
+        <button type="submit" class="big-btn" id="orderSubmit">➕ Add Order</button>
+        <a class="link-btn" href="addInventory.html">Add Inventory</a>
+      </div>
+
+      <p id="noInventoryNotice" class="notice" style="display:none;">
+        No inventory items found. Please add items first.
+      </p>
     </form>
+
+    <section class="nav-buttons">
+      <a class="big-btn" href="index.html">🏠 Back to Dashboard</a>
+      <a class="big-btn" href="orders.html">📋 View Orders</a>
+    </section>
   </main>
 
+  <footer class="site-footer">
+    <small>SynapseSparks • Private system • Works offline</small>
+  </footer>
+
   <script src="script.js"></script>
+  <script>
+    // populate dropdown when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      populateInventoryDropdown();
+      // hook form handler
+      const f = document.getElementById('orderForm');
+      if (f) f.addEventListener('submit', handleAddOrder);
+    });
+  </script>
 </body>
 </html>

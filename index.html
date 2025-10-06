@@ -1,23 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Tracker - Home</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SynapseSparks — Dashboard</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>📦 Order Tracker</h1>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="brand">SynapseSparks</h1>
+      <p class="tagline">Private Store Manager</p>
+    </div>
   </header>
 
-  <main>
-    <button onclick="window.location.href='orders.html'">View Orders</button>
-    <button onclick="window.location.href='add.html'">Add Order</button>
+  <main class="container">
+    <section class="summary-row" aria-label="summary">
+      <div class="card fade-in" id="pendingCard" role="status" aria-live="polite">
+        <div class="card-title">Pending Orders</div>
+        <div class="card-value" id="pendingCount">0</div>
+      </div>
+
+      <div class="card fade-in" id="lowStockCard" role="status" aria-live="polite">
+        <div class="card-title">Low Stock Items</div>
+        <div class="card-value" id="lowStockCount">0</div>
+      </div>
+    </section>
+
+    <section class="nav-buttons" aria-label="navigation">
+      <a class="big-btn" href="orders.html">📋 View Orders</a>
+      <a class="big-btn" href="add.html">➕ Add Order</a>
+      <a class="big-btn" href="inventory.html">📦 Manage Inventory</a>
+      <a class="big-btn" href="addInventory.html">➕ Add Inventory</a>
+    </section>
+
+    <section class="hint">
+      <small>Tip: Add items in Inventory first, then place orders. Low-stock threshold = 10 (changeable).</small>
+    </section>
   </main>
 
-  <footer>
-    <p>Order Tracker App © 2025</p>
+  <footer class="site-footer">
+    <small>SynapseSparks • Private system • Works offline</small>
   </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // safe call to update summary
+    if (typeof updateSummary === 'function') updateSummary();
+  </script>
 </body>
 </html>

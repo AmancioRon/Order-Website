@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SynapseSparks — Inventory</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="brand">SynapseSparks</h1>
+      <p class="tagline">Manage Inventory</p>
+    </div>
+  </header>
+
+  <main class="inventory-layout container">
+    <aside class="sidebar" id="categorySidebar">
+      <h2>Categories</h2>
+      <div id="categoryList" class="category-list"></div>
+    </aside>
+
+    <section class="inventory-content">
+      <h2 id="currentCategoryTitle">All Items</h2>
+      <ul id="inventoryList" class="inventory-list"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a href="index.html" class="big-btn">🏠 Back to Dashboard</a>
+    <a href="addInventory.html" class="big-btn">➕ Add / Update Item</a>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCategories();
+      renderInventory();
+    });
+  </script>
+</body>
+</html>

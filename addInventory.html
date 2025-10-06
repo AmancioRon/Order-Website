@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SynapseSparks — Add Inventory</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="brand">SynapseSparks</h1>
+      <p class="tagline">Add / Update Inventory</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <form id="inventoryForm" class="form-card">
+      <label>
+        Item Name:
+        <input type="text" id="invItemName" required>
+      </label>
+
+      <label>
+        Category:
+        <input type="text" id="invCategory" required>
+      </label>
+
+      <label>
+        Quantity (enter number to add to stock):
+        <input type="number" id="invQty" min="0" required>
+      </label>
+
+      <label>
+        Supplier:
+        <input type="text" id="invSupplier" required>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="big-btn">➕ Save Item</button>
+        <a class="link-btn" href="inventory.html">View Inventory</a>
+      </div>
+      
+    </form>
+
+    <section class="nav-buttons">
+      <a class="big-btn" href="index.html">🏠 Back to Dashboard</a>
+      <a class="big-btn" href="add.html">➕ Add Order</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>SynapseSparks • Private system • Works offline</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('inventoryForm');
+      if (form) form.addEventListener('submit', handleAddInventory);
+    });
+  </script>
+</body>
+</html>
