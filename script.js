@@ -9,10 +9,13 @@ function firebaseAvailable() {
 function getInventory(callback) {
   if (firebaseAvailable()) {
     db.ref("inventory").once("value", (snapshot) => {
-      callback(snapshot.val() || []);
+      const val = snapshot.val() || [];
+      const arr = Array.isArray(val) ? val : Object.values(val);
+      callback(arr);
     });
   } else {
-    callback(JSON.parse(localStorage.getItem("inventory")) || []);
+    const val = JSON.parse(localStorage.getItem("inventory")) || [];
+    callback(Array.isArray(val) ? val : Object.values(val));
   }
 }
 function saveInventory(items) {
@@ -26,10 +29,13 @@ function saveInventory(items) {
 function getOrders(callback) {
   if (firebaseAvailable()) {
     db.ref("orders").once("value", (snapshot) => {
-      callback(snapshot.val() || []);
+      const val = snapshot.val() || [];
+      const arr = Array.isArray(val) ? val : Object.values(val);
+      callback(arr);
     });
   } else {
-    callback(JSON.parse(localStorage.getItem("orders")) || []);
+    const val = JSON.parse(localStorage.getItem("orders")) || [];
+    callback(Array.isArray(val) ? val : Object.values(val));
   }
 }
 function saveOrders(orders) {
@@ -42,12 +48,10 @@ function saveOrders(orders) {
 /* -------------------------
    Inventory functions
    ------------------------- */
-// Add or update inventory item (restock if exists)
 function addOrUpdateInventoryItem(item) {
   getInventory((items) => {
     const existingIndex = items.findIndex(i => i.name.toLowerCase() === item.name.toLowerCase());
     if (existingIndex >= 0) {
-      // restock: add qty and update category/supplier
       items[existingIndex].qty = (items[existingIndex].qty || 0) + (item.qty || 0);
       items[existingIndex].category = item.category || items[existingIndex].category;
       items[existingIndex].supplier = item.supplier || items[existingIndex].supplier;
@@ -67,7 +71,6 @@ function addOrUpdateInventoryItem(item) {
   });
 }
 
-// Simple restock
 function restockItemByName(name, addQty) {
   getInventory((items) => {
     const idx = items.findIndex(i => i.name.toLowerCase() === name.toLowerCase());
@@ -84,7 +87,6 @@ function restockItemByName(name, addQty) {
   });
 }
 
-// Delete inventory item
 function deleteInventoryItem(name) {
   if (!confirm(`Delete item "${name}" from inventory? This cannot be undone.`)) return;
   getInventory((items) => {
@@ -107,7 +109,6 @@ function renderCategories() {
     const categories = [...new Set(items.map(i => i.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
     sidebar.innerHTML = '';
 
-    // All items button
     const allBtn = document.createElement('button');
     allBtn.className = 'cat-btn';
     allBtn.textContent = 'All Items';
@@ -166,7 +167,6 @@ function renderInventory(category = null) {
   });
 }
 
-// prompts
 function promptRestock(name) {
   const q = prompt(`Add how many units to "${name}"? (enter a positive number)`);
   if (q === null) return;
@@ -190,7 +190,6 @@ function promptEditItem(name) {
     if (newQtyStr === null) return;
     const newQty = parseInt(newQtyStr, 10);
     if (isNaN(newQty) || newQty < 0) { alert('Invalid qty'); return; }
-    // apply changes
     items[idx].name = newName.trim();
     items[idx].category = newCat.trim();
     items[idx].supplier = newSupplier.trim();
@@ -204,7 +203,7 @@ function promptEditItem(name) {
 }
 
 /* -------------------------
-   Order functions
+   Orders functions
    ------------------------- */
 function renderOrders() {
   const list = document.getElementById('ordersList');
@@ -298,38 +297,26 @@ function handleAddOrder(e) {
   getInventory((items) => {
     const target = items.find(i => i.name === itemName);
 
-    if (!target) {
-      if (!confirm('Item not found in inventory. Add order anyway? (no stock will be deducted)')) return;
-      getOrders((orders) => {
-        orders.push({ customer, item: itemName, qty, deadline });
-        saveOrders(orders);
-        alert('Order added (no inventory changes).');
-        if (typeof populateInventoryDropdown === 'function') populateInventoryDropdown();
-        if (typeof updateSummary === 'function') updateSummary();
-        window.location.href = 'orders.html';
-      });
-      return;
-    }
-
-    if (target.qty < qty) {
+    if (target && target.qty < qty) {
       if (!confirm(`Not enough stock (have ${target.qty}). Proceed and allow negative stock?`)) return;
     }
 
-    // deduct and save
-    target.qty = (target.qty || 0) - qty;
-    saveInventory(items);
+    if (target) {
+      target.qty = (target.qty || 0) - qty;
+      saveInventory(items);
+    }
 
     getOrders((orders) => {
       orders.push({ customer, item: itemName, qty, deadline });
       saveOrders(orders);
 
-      alert('Order added and inventory updated.');
+      alert('Order added successfully.');
       if (typeof renderInventory === 'function') renderInventory();
       if (typeof renderCategories === 'function') renderCategories();
       if (typeof populateInventoryDropdown === 'function') populateInventoryDropdown();
       if (typeof updateSummary === 'function') updateSummary();
 
-      window.location.href = 'orders.html';
+      if (document.getElementById('ordersList')) renderOrders(); // live update orders page
     });
   });
 }
@@ -348,7 +335,6 @@ function handleAddInventory(e) {
   if (!name || !category || isNaN(qty) || qty < 0 || !supplier) { alert('Please complete all fields (qty must be 0 or more).'); return; }
 
   addOrUpdateInventoryItem({ name, category, qty, supplier });
-
   alert('Item saved (new or restocked).');
   const form = document.getElementById('inventoryForm');
   if (form) form.reset();
@@ -360,7 +346,7 @@ function handleAddInventory(e) {
 function updateSummary() {
   getOrders((orders) => {
     getInventory((inventory) => {
-      const pendingCount = orders.length;
+      const pendingCount = orders.length || 0;
       const lowStockCount = inventory.filter(i => (i.qty || 0) <= 10).length;
       const pEl = document.getElementById('pendingCount');
       const lEl = document.getElementById('lowStockCount');
@@ -371,7 +357,7 @@ function updateSummary() {
 }
 
 /* -------------------------
-   Utility escapes (safe inline)
+   Utility escapes
    ------------------------- */
 function escapeHtml(str) {
   if (!str && str !== 0) return '';
@@ -383,7 +369,7 @@ function escapeJs(str) {
 }
 
 /* -------------------------
-   Initialize on load for pages (safe)
+   Initialize on load
    ------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
   populateInventoryDropdown();
@@ -397,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (typeof updateSummary === 'function') updateSummary();
 
-  // Optional: Real-time sync (if you want live updates)
+  // Real-time sync
   if (firebaseAvailable()) {
     db.ref("inventory").on("value", () => {
       if (typeof renderInventory === "function") renderInventory();
